@@ -1,15 +1,6 @@
 const usersData = require("../users.json");
-const userSearchSchema = require("../schemas/userSearch.schema");
-const verifyAuth = require("../utils/verifyAuth");
-
-const validateUserSearch = (gender, age) => {
-  const result = userSearchSchema.validate({ gender, age });
-  return result.error;
-};
 
 const getUsers = (req, res) => {
-  if (!verifyAuth(req.headers.authorization))
-    return res.status(403).json({ message: "Unauthorized Request" });
   res.json(usersData.data);
 };
 
@@ -29,9 +20,6 @@ const getUserByUserId = (req, res) => {
 
 const searchUser = (req, res) => {
   let { gender, age } = req.query;
-  const errors = validateUserSearch(gender, age);
-  if (errors)
-    return res.status(422).json({ messsage: errors.details[0].message });
   if (gender && age) {
     // const filteredByGender = filterByGender(usersData.data, gender);
     // return res.send(filterByAge(filteredByGender, parseInt(age)));

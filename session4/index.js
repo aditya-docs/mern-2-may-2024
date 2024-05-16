@@ -1,13 +1,27 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 dotenv.config();
 //require('dotenv').config()
 
 const currenciesRouter = require("./routes/currencies.routes");
 const userRouter = require("./routes/users.routes");
+// const verifyAuth = require("./middlewares/verifyAuth");
 
 const app = express();
 const PORT = 8082;
+const DB_URI = process.env.DB_URI;
+
+const connectDB = async () => {
+  try {
+    await mongoose.connect(`${DB_URI}`);
+    console.log("Connected to DB at", DB_URI);
+  } catch (e) {
+    console.log("Failed to connect to DB", e);
+  }
+};
+connectDB();
+// app.use(verifyAuth);
 
 app.get("/", (req, res) => {
   res.send("<h1>Currency Database</h1>");
@@ -18,6 +32,8 @@ app.get("/status", (req, res) => {
 });
 
 app.use("/currencies", currenciesRouter);
+
+// app.use(verifyAuth);
 
 app.use("/users", userRouter);
 
