@@ -6,11 +6,14 @@ dotenv.config();
 
 const currenciesRouter = require("./routes/currencies.routes");
 const userRouter = require("./routes/users.routes");
+const blogRouter = require("./routes/blogs.routes");
 // const verifyAuth = require("./middlewares/verifyAuth");
 
 const app = express();
 const PORT = 8082;
 const DB_URI = process.env.DB_URI;
+
+app.use(express.json());
 
 const connectDB = async () => {
   try {
@@ -36,6 +39,7 @@ app.use("/currencies", currenciesRouter);
 // app.use(verifyAuth);
 
 app.use("/users", userRouter);
+app.use("/blogs", blogRouter);
 
 app.listen(PORT, () => {
   console.log(`Server running on port: ${PORT}`);
