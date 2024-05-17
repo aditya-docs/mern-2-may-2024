@@ -22,3 +22,30 @@ Authorization: LetMeIn
 ###
 GET http://localhost:8082/users/search?age=49&gender=male
 Authorization: LetMeIn
+###
+GET http://localhost:8082/blogs
+###
+GET http://localhost:8082/blogs/664794339240c46409f12428
+###
+POST http://localhost:8082/blogs
+Authorization: LetMeIn
+Content-Type: application/json
+
+{
+  "title": "India Elections"
+}
+
+###
+DELETE http://localhost:8082/blogs/6647940220edca4c26121149
+Authorization: LetMeIn
+
+###
+PATCH http://localhost:8082/blogs/664794339240c46409f12428
+Authorization: LetMeIn
+Content-Type: application/json
+
+{
+  "title": "UK Elections",
+  "author": [{"name": "mike", "age": "45"}],
+  "content": "Get ready for elections"
+}

@@ -1,10 +1,19 @@
 const mongoose = require("mongoose");
+const { required } = require("./userSearch.schema");
 
-const blogSchema = mongoose.Schema({
-  title: String, //Title is string
-  authors: [String], //Authors is an array of strings
-  content: String, //Content is string
-  publishedAt: Date, //publishedAt is Date
+const authorSchema = mongoose.Schema({
+  name: { type: String, required: true },
+  age: { type: Number },
 });
+
+const blogSchema = mongoose.Schema(
+  {
+    title: { type: String, required: true, unique: true },
+    author: { type: [authorSchema], required: true },
+    content: { type: String, default: "" },
+    publishedAt: { type: Date, default: null },
+  },
+  { timestamps: true }
+);
 
 module.exports = blogSchema;
