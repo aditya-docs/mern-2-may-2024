@@ -25,27 +25,43 @@ Authorization: LetMeIn
 ###
 GET http://localhost:8082/blogs
 ###
-GET http://localhost:8082/blogs/664796aa113144a267b577a9
+GET http://localhost:8082/blogs/664cd118685b621b7a6f151f
 ###
 POST http://localhost:8082/blogs
 Authorization: LetMeIn
 Content-Type: application/json
 
 {
-  "title": "India Elections"
+  "title": "India Elections",
+  "author": [
+    {
+      "fullName": "Rubbish Kr",
+      "email": "rubbish@ndtv.in",
+      "twitterHandle": "@_rubbish_aap",
+      "image": "https://pbs.twimg.com/profile_images/3767286347"
+    }
+  ],
+  "content": "Last 2 phases left"
 }
 
 ###
-DELETE http://localhost:8082/blogs/6647940220edca4c26121149
+DELETE http://localhost:8082/blogs/664cd118685b621b7a6f151f
 Authorization: LetMeIn
 
 ###
-PATCH http://localhost:8082/blogs/664794339240c46409f12428
+PATCH http://localhost:8082/blogs/664cc5de17f21b0e9fa02b22
 Authorization: LetMeIn
 Content-Type: application/json
 
 {
-  "title": "UK Elections",
-  "author": [{"name": "mike", "age": "45"}],
-  "content": "Get ready for elections"
+  "content": "Elections coming up"
 }
+
+###
+GET http://localhost:8082/blogs/search?title=Australia%20Elections&author=john@abc.in
+
+###
+GET http://localhost:8082/blogs/search?author=john@abc.in
+
+###
+GET http://localhost:8082/blogs/search?title=elections

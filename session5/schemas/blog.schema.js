@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { required } = require("./userSearch.schema");
 
 const authorSchema = mongoose.Schema({
   name: { type: String, required: true },
@@ -9,7 +8,7 @@ const authorSchema = mongoose.Schema({
 const blogSchema = mongoose.Schema(
   {
     title: { type: String, required: true, unique: true },
-    author: { type: [authorSchema], required: true },
+    author: { type: [authorSchema] },
     content: { type: String, default: "" },
     publishedAt: { type: Date, default: null },
   },
