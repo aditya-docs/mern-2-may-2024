@@ -1,15 +1,9 @@
-const {
-  findAllBlogs,
-  findBlogByIdHelper,
-  createBlogDocument,
-  deleteBlogDocumentById,
-  updateBlogDocumentById,
-  findBlogsByTitleAndAuthor,
-} = require("../services/blogs.service");
+const BlogService = require("../services/blogs.service");
+const BlogServiceInstance = new BlogService();
 
 const getBlogs = async (req, res) => {
   try {
-    const blogs = await findAllBlogs();
+    const blogs = await BlogServiceInstance.findAll();
     res.send(blogs);
   } catch (error) {
     res.status(500).json("Oops! Something went wrong. Please try again");
@@ -18,7 +12,7 @@ const getBlogs = async (req, res) => {
 
 const getBlogById = async (req, res) => {
   try {
-    const reqBlog = await findBlogByIdHelper(req.params.id);
+    const reqBlog = await BlogServiceInstance.findById(req.params.id);
     if (reqBlog === null)
       return res
         .status(404)
@@ -35,7 +29,7 @@ const getBlogById = async (req, res) => {
 
 const createBlog = async (req, res) => {
   try {
-    const newBlog = await createBlogDocument(req.body);
+    const newBlog = await BlogServiceInstance.create(req.body);
     // const newBlog = new Blog(req.body);
     // await newBlog.save();
     res.status(201).json({ id: newBlog._id });
@@ -51,12 +45,12 @@ const createBlog = async (req, res) => {
 
 const deleteBlogById = async (req, res) => {
   try {
-    const reqBlog = await findBlogByIdHelper(req.params.id);
+    const reqBlog = await BlogServiceInstance.findById(req.params.id);
     if (reqBlog === null)
       return res
         .status(404)
         .json({ message: "Could not find a blog with the given id" });
-    await deleteBlogDocumentById(req.params.id);
+    await BlogServiceInstance.deleteById(req.params.id);
     res.sendStatus(204);
   } catch (error) {
     if (error.message.includes("Cast to ObjectId failed"))
@@ -69,12 +63,15 @@ const deleteBlogById = async (req, res) => {
 
 const updateBlogById = async (req, res) => {
   try {
-    const reqBlog = await findBlogByIdHelper(req.params.id);
+    const reqBlog = await BlogServiceInstance.findById(req.params.id);
     if (reqBlog === null)
       return res
         .status(404)
         .json({ message: "Could not find a blog with the given id" });
-    const updatedBlog = await updateBlogDocumentById(req.params.id, req.body);
+    const updatedBlog = await BlogServiceInstance.updateById(
+      req.params.id,
+      req.body
+    );
     res.status(200).json(updatedBlog);
   } catch (error) {
     if (error.code === 11000)
@@ -93,7 +90,7 @@ const updateBlogById = async (req, res) => {
 const searchBlogs = async (req, res) => {
   const { title, author } = req.query;
   try {
-    const blogs = await findBlogsByTitleAndAuthor(title, author);
+    const blogs = await BlogServiceInstance.findByQuery(title, author);
     res.send(blogs);
   } catch (error) {
     res.status(500).json("Oops! Something went wrong. Please try again");
